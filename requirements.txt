@@ -1,0 +1,6 @@
+dependency-injector
+flask
+pyyaml
+code
+copyleaks
+rope
