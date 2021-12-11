@@ -51,3 +51,20 @@ def submit_solution(
             'message': response.content,
             'payload': {}
         }), 500
+
+
+def get_plagiarism_result(scan_id, project_root):
+    try:
+        with open(project_root + f'/results/result_{scan_id}.pdf', 'rb') as file:
+            content = file.read()
+    except Exception:
+        return jsonify({
+            'message': 'Result is not ready',
+            'payload': {'content': None}
+        }), 200
+    base64_encoded_content = base64.b64encode(content)
+    base64_content = base64_encoded_content.decode('utf-8')
+    return jsonify({
+        'message': 'Result is ready',
+        'payload': {'content': base64_content}
+    })

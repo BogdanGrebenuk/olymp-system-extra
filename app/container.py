@@ -2,7 +2,7 @@ from dependency_injector import containers, providers
 from dependency_injector.ext import flask as flask_ext
 from flask import Flask
 
-from app.api import submit_solution
+from app.api import submit_solution, get_plagiarism_result
 from app.services import CodeNormalizer
 from app.webhooks import completed_webhook, error_webhook, credits_webhook, export_webhook
 
@@ -33,6 +33,11 @@ class Container(containers.DeclarativeContainer):
         cl_email=config.cl_email,
         cl_api_key=config.cl_api_key,
         cl_sandbox=config.cl_sandbox
+    )
+
+    get_plagiarism_results = flask_ext.View(
+        get_plagiarism_result,
+        project_root=config.project_root
     )
 
     # webhooks
