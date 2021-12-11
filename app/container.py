@@ -2,8 +2,8 @@ from dependency_injector import containers, providers
 from dependency_injector.ext import flask as flask_ext
 from flask import Flask
 
-from app.api import submit_solution, get_plagiarism_result
-from app.services import CodeNormalizer
+from app.api import submit_solution, get_plagiarism_result, get_management_analysis
+from app.services import CodeNormalizer, ManagementAnalyzer
 from app.webhooks import completed_webhook, error_webhook, credits_webhook, export_webhook
 
 
@@ -24,6 +24,10 @@ class Container(containers.DeclarativeContainer):
         project_root=config.project_root
     )
 
+    management_analyzer = providers.Factory(
+        ManagementAnalyzer,
+    )
+
     # api
 
     submit_solution = flask_ext.View(
@@ -38,6 +42,12 @@ class Container(containers.DeclarativeContainer):
     get_plagiarism_results = flask_ext.View(
         get_plagiarism_result,
         project_root=config.project_root
+    )
+
+    get_management_analysis = flask_ext.View(
+        get_management_analysis,
+        project_root=config.project_root,
+        management_analyzer=management_analyzer
     )
 
     # webhooks

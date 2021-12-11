@@ -68,3 +68,23 @@ def get_plagiarism_result(scan_id, project_root):
         'message': 'Result is ready',
         'payload': {'content': base64_content}
     })
+
+
+def get_management_analysis(management_analyzer, project_root):
+    body = request.json
+    request_id = str(uuid.uuid4())
+    be_git_info = body.get('BEGitInfo')
+    fe_git_info = body.get('FEGitInfo')
+    file_path = f'{project_root}/plots/plot_{request_id}.png'
+
+    management_analyzer.create_plot(file_path, be_git_info, fe_git_info, '2021-11-27', '2021-11-28')
+
+    with open(file_path, 'rb') as file:
+        content = file.read()
+    base64_encoded_content = base64.b64encode(content)
+    base64_content = base64_encoded_content.decode('utf-8')
+
+    return jsonify({
+        'message': 'Analysis is ready',
+        'payload': {'content': base64_content}
+    })
