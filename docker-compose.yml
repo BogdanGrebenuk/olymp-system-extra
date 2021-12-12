@@ -6,7 +6,7 @@ services:
     build: .
     volumes:
       - ./:/olymp-system-extra
-    command: flask run
+    command: flask run --host=0.0.0.0
     ports:
       - "5000:5000"
     environment:
