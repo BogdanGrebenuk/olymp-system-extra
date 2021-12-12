@@ -1,0 +1,14 @@
+version: "3.2"
+
+services:
+  ose-web:
+    container_name: ose-web
+    build: .
+    volumes:
+      - ./:/olymp-system-extra
+    command: flask run
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - FLASK_APP=app.main
